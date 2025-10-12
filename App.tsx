@@ -1,43 +1,42 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React from 'react';
+import { StatusBar, StyleSheet, useColorScheme } from 'react-native';
 import {
   SafeAreaProvider,
-  useSafeAreaInsets,
+  SafeAreaView,
 } from 'react-native-safe-area-context';
+import WebView from 'react-native-webview';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
+  const background = !isDarkMode ? '#121212' : '#F5F5F5';
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+      <StatusBar
+        barStyle={!isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={background}
+      />
+      <WebViewComponent background={background} />
     </SafeAreaProvider>
   );
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
+const WebViewComponent = ({ background }: { background: string }) => {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
+    <SafeAreaView style={[styles.container, { backgroundColor: background }]} edges={['top', 'bottom']}>
+      <WebView
+        source={{ uri: 'https://yuristmarket.uz/' }}
+        style={styles.webview}
       />
-    </View>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  webview: {
     flex: 1,
   },
 });
